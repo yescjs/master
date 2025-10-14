@@ -20,18 +20,19 @@ public class PostService {
     }
 
     public Post findPostById(Long id) {
+        return postRepository.findById(id).orElse(null);
         // return postRepository.findById(id).orElseThrow(() -> new RuntimeException("게시글 없음"));
-        String key = "post:" + id;
+        // String key = "post:" + id;
         
-        if (redisTemplate.hasKey(key)) {
-            String cached = (String) redisTemplate.opsForValue().get(key);
-            return new Post(id, cached, "내용 캐시", "작성자", null);
-        }
+        // if (redisTemplate.hasKey(key)) {
+        //     String cached = (String) redisTemplate.opsForValue().get(key);
+        //     return new Post(id, cached, "내용 캐시", "작성자", null);
+        // }
         
-        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("게시글 없음"));
-        redisTemplate.opsForValue().set(key, post.getTitle(), 1, TimeUnit.MINUTES);
+        // Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("게시글 없음"));
+        // redisTemplate.opsForValue().set(key, post.getTitle(), 1, TimeUnit.MINUTES);
         
-        return post;
+        // return post;
     }
 
     public Page<Post> getAllPosts(Pageable pageable) {
